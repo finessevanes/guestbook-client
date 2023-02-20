@@ -1,5 +1,5 @@
 import { configureChains, createClient, WagmiConfig, useAccount } from "wagmi";
-import { goerli } from "wagmi/chains";
+import { goerli, localhost } from "wagmi/chains";
 import {
   EthereumClient,
   modalConnectors,
@@ -12,7 +12,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const chains = [goerli];
+const chains = [goerli, localhost];
 const projectId = import.meta.env.VITE_PROJECT_ID;
 const { provider } = configureChains(chains, [
   walletConnectProvider({ projectId }),
