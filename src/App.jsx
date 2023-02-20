@@ -10,6 +10,7 @@ import {
 } from "wagmi";
 import GuestBookForm from "./components/GuestBookForm";
 import guestBook from "./abis/guestBook.json";
+import Entry from "./components/Entry";
 
 function App() {
   const [entries, setEntries] = useState([]);
@@ -108,9 +109,9 @@ function App() {
               </button>
             </>
           )}
-          {entries.length > 0 ? (
+          {data.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
-              {entries.map((entry, index) => (
+              {data.map((entry, index) => (
                 <Entry key={index} entry={entry} />
               ))}
             </div>
