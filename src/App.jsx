@@ -1,19 +1,41 @@
 import { useState, useEffect } from "react";
 import { Web3Button } from "@web3modal/react";
-import { WagmiConfig, useAccount, useContract, useContractRead } from "wagmi";
+import {
+  WagmiConfig,
+  useAccount,
+  useContract,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+} from "wagmi";
 import GuestBookForm from "./components/GuestBookForm";
 import guestBook from "./abis/guestBook.json";
-import { ethers } from "ethers";
 
 function App() {
   const [entries, setEntries] = useState([]);
   const [newEntry, setNewEntry] = useState("");
   const { isConnected } = useAccount();
   const abi = guestBook.abi;
+  const contractAddress = "0x61912362D631f0e09e2e0E7934F725097bECc05b";
   const contract = useContract({
-    address: "0x61912362D631f0e09e2e0E7934F725097bECc05b",
+    address: contractAddress,
     abi,
   });
+
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi,
+    functionName: "addEntry",
+    args: ["Pair programming is fun!"],
+  });
+
+  const {
+    data: dataToWrite,
+    isLoading: dataIsLoading,
+    isSuccess,
+    write,
+    error: writeError,
+  } = useContractWrite(config);
 
   const handleNewEntryChange = (event) => {
     setNewEntry(event.target.value);
@@ -21,16 +43,23 @@ function App() {
 
   const handleAddEntry = async () => {
     console.log("test");
+    try {
+      write();
+    } catch (e) {
+      console.log(e);
+      console.log(writeError);
+    }
   };
 
   const handleGetEntries = async () => {
     checkEntries();
   };
 
-  const { data, isError, isLoading, error } = useContractRead({
-    address: "0x61912362D631f0e09e2e0E7934F725097bECc05b",
+  const { data } = useContractRead({
+    address: contractAddress,
     abi,
     functionName: "getEntries",
+    watch: true,
   });
 
   function checkEntries() {
@@ -40,20 +69,24 @@ function App() {
         console.log("sender", entry.sender);
         const timestamp = entry.timestamp.toNumber();
         const date = new Date(timestamp * 1000);
-
         const month = date.toLocaleString("default", { month: "long" });
         const day = date.getDate();
         const time = date.toLocaleTimeString();
-
         console.log(`${month} ${day}, ${time}`); // output: "February 23, 3:01:40 PM"
-        setEntries({
-          message: entry.message,
-          sender: entry.sender,
-          timestamp: `${month} ${day}, ${time}`,
-        })
+
+        // setEntries(..);
+
+        console.log("entries:: above undefined", entries);
+        console.log(entries.length);
       });
     }
   }
+
+  useEffect(() => {
+    if (data) {
+      checkEntries();
+    }
+  }, [data]);
 
   return (
     <>
@@ -75,12 +108,14 @@ function App() {
               </button>
             </>
           )}
-          {entries.length && (
+          {entries.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
               {entries.map((entry, index) => (
                 <Entry key={index} entry={entry} />
               ))}
             </div>
+          ) : (
+            <h1>Nothing</h1>
           )}
         </div>
       </div>
