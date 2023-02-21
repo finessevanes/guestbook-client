@@ -1,13 +1,22 @@
 import React from "react";
 
 const Entry = ({ entry }) => {
+  const { message, sender, timestamp } = entry;
+  const timestampInt = entry.timestamp.toNumber();
+  const date = new Date(timestampInt * 1000);
+  const month = date.toLocaleString("default", { month: "long" });
+  const day = date.getDate();
+  const time = date.toLocaleTimeString();
+  const dateStr = `${month} ${day}, ${time}`;
   return (
-    <div className="bg-white shadow-md rounded p-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-bold">{entry.sender}</h2>
-        <span className="text-gray-500 text-sm">{entry.timestamp.toNumber()}</span>
+    <div className="bg-white shadow-md rounded-md p-4 mb-4 flex flex-col">
+      <div className="text-gray-800 font-medium mb-2">{message}</div>
+      <div className="text-gray-600 text-sm mb-2">
+        <span className="font-medium">From:</span> {sender}
       </div>
-      <p className="text-gray-700 my-2">{entry.message}</p>
+      <div className="text-gray-600 text-sm self-end">
+        {dateStr}
+      </div>
     </div>
   );
 };
