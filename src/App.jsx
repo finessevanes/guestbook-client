@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Web3Button } from "@web3modal/react";
+import { useState } from "react";
+import { Web3Button, useWeb3ModalTheme } from "@web3modal/react";
 import {
   useContractRead,
   useContractWrite,
@@ -14,11 +14,19 @@ function App() {
   const abi = guestBook.abi;
   const contractAddress = "0x61912362D631f0e09e2e0E7934F725097bECc05b";
 
-  const { config } = usePrepareContractWrite({
+  const { setTheme } = useWeb3ModalTheme();
+
+  setTheme({
+    themeMode: "dark",
+    themeColor: "default",
+    themeBackground: "gradient",
+  });
+
+  const { config  } = usePrepareContractWrite({
     address: contractAddress,
     abi,
     functionName: "addEntry",
-    args: [newEntry],
+    args: [newEntry]
   });
 
   const { write } = useContractWrite(config);
@@ -32,7 +40,6 @@ function App() {
       write();
     } catch (e) {
       console.log(e);
-      console.log(writeError);
     }
   };
 
@@ -46,7 +53,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-lg">
-        <Web3Button />
+        <Web3Button label="Connect" icon="hide" />
         <GuestBookForm
           handleAddEntry={handleAddEntry}
           newEntry={newEntry}
