@@ -1,12 +1,32 @@
-import React from "react";
-import { useAccount } from "wagmi";
+import React, {useState} from "react";
+import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import guestBook from "../abis/guestBook.json";
 
-const GuestBookForm = ({ handleAddEntry, newEntry, handleNewEntryChange }) => {
+const GuestBookForm = () => {
+  const [newEntry, setNewEntry] = useState("");
+  const abi = guestBook.abi;
+  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
+
+
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi,
+    functionName: "addEntry",
+    args: [newEntry],
+  });
+  const { data: writeGuestBookData, write } = useContractWrite(config);
+
+  const handleNewEntryChange = (event) => {
+    setNewEntry(event.target.value);
+  };
+
+  console.log("writeGuestBookData", writeGuestBookData?.hash);
+
   const { isConnected } = useAccount();
   return (
     <div className="bg-white shadow-md rounded px-8 py-6 mb-8">
       <h1 className="text-4xl font-bold mb-4">Guest Book</h1>
-      <form onSubmit={handleAddEntry}>
+      <form onSubmit={() => write?.()}>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="entry">
             Write a new entry
