@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Web3Button, useWeb3ModalTheme } from "@web3modal/react";
 import {
   useContractRead,
@@ -22,25 +22,17 @@ function App() {
     themeBackground: "gradient",
   });
 
-  const { config  } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi,
     functionName: "addEntry",
-    args: [newEntry]
+    args: [newEntry],
   });
 
-  const { write } = useContractWrite(config);
+  const { data: writeGuestBookData, write } = useContractWrite(config);
 
   const handleNewEntryChange = (event) => {
     setNewEntry(event.target.value);
-  };
-
-  const handleAddEntry = async () => {
-    try {
-      write();
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const { data: dataEntries } = useContractRead({
@@ -50,16 +42,29 @@ function App() {
     watch: true,
   });
 
+  // console.log("writeGuestBookData", writeGuestBookData?.hash);
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-lg">
         <Web3Button label="Connect" icon="hide" />
+
+        // <button
+        //   onClick={() => write?.()}
+        //   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
+        //   type="submit"
+        //   disabled={!isConnected}
+        // >
+        //   Add Entry
+        // </button>
+
         <GuestBookForm
-          handleAddEntry={handleAddEntry}
+          write={write}
           newEntry={newEntry}
           handleNewEntryChange={handleNewEntryChange}
         />
-        {Boolean(dataEntries.length) && (
+
+        {Boolean(dataEntries?.length) && (
           <div className="grid grid-cols-1 gap-4">
             {dataEntries
               .map((entry, index) => <Entry key={index} entry={entry} />)
