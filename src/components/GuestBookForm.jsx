@@ -1,36 +1,14 @@
-import React, { useState } from "react";
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
-import guestBook from "../abis/guestBook.json";
+import { useAccount } from "wagmi";
 
-const GuestBookForm = () => {
-  const [newEntry, setNewEntry] = useState("");
-  const abi = guestBook.abi;
-  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
+const GuestBookForm = ({
+  handleSubmit,
+  handleNewEntryChange,
+  newEntry,
+}) => {
   const { isConnected } = useAccount();
 
-  const { config } = usePrepareContractWrite({
-    address: contractAddress,
-    abi,
-    functionName: "addEntry",
-    args: [newEntry],
-  });
-
-  const { data: writeGuestBookData, write } = useContractWrite(config);
-
-  const handleNewEntryChange = (event) => {
-    setNewEntry(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    write?.();
-    setNewEntry("");
-  };
-
-  console.log("writeGuestBookData", writeGuestBookData?.hash);
-
   return (
-    <div className="bg-white shadow-md rounded px-8 py-6 mb-8">
+    <div className="bg-white shadow-md rounded px-8 py-6 mb-8 mt-2">
       <h1 className="text-4xl font-bold mb-4">Guest Book</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
