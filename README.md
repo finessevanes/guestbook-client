@@ -1,6 +1,6 @@
 # Guestbook App
 
-This is a simple guestbook app built with Vite that allows users to add new entries and display them on the screen. The app uses the `@web3modal/react` package to connect to a wallet and `wagmi` to interact with a smart contract. The smart contract has been deployed to the [Goerli network](https://goerli.etherscan.io/address/0x61912362d631f0e09e2e0e7934f725097becc05b).
+This is a simple guestbook app built with Vite that allows users to add new entries and display them on the screen. The app uses the `@web3modal/react` package to connect to a wallet and `wagmi` to interact with a smart contract. The smart contract has been deployed to the [Goerli network](https://goerli.etherscan.io/address/0xCC64aE81777169420be5e8c73f209F0733F3ac00).
 
 ## Getting Started
 
