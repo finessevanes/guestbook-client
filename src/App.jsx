@@ -4,6 +4,7 @@ import {
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
+  useWaitForTransaction,
 } from "wagmi";
 import GuestBookForm from "./components/GuestBookForm";
 import Entry from "./components/Entry";
@@ -17,8 +18,8 @@ function App() {
   const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
 
   setTheme({
-    themeMode: "dark",
-    themeColor: "default",
+    themeMode: "light",
+    themeColor: "blackWhite",
     themeBackground: "gradient",
   });
 
@@ -38,6 +39,10 @@ function App() {
 
   const { data: writeGuestBookData, write } = useContractWrite(config);
 
+  const { isLoading } = useWaitForTransaction({
+    hash: writeGuestBookData?.hash,
+  });
+
   const handleNewEntryChange = (event) => {
     setNewEntry(event.target.value);
   };
@@ -48,9 +53,11 @@ function App() {
     setNewEntry("");
   };
 
-  if (writeGuestBookData?.hash !== undefined) {
-    console.log(writeGuestBookData?.hash);
-  }
+  useEffect(() => {
+    if (writeGuestBookData?.hash !== undefined) {
+      setTxnHash(writeGuestBookData.hash);
+    }
+  }, [writeGuestBookData]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -61,6 +68,21 @@ function App() {
           handleNewEntryChange={handleNewEntryChange}
           newEntry={newEntry}
         />
+        {isLoading && (
+          <div className="bg-white shadow-md rounded-md p-4 mb-4 flex flex-col">
+            <div className="text-gray-600 text-sm mb-2">
+              Your transaction is pending. Click{" "}
+              <a
+                href={`https://goerli.etherscan.io/tx/${txnHash}`}
+                target="_blank"
+                className="text-blue-500"
+              >
+                here
+              </a>{" "}
+              to view it on Etherscan
+            </div>
+          </div>
+        )}
         {Boolean(dataEntries.length) ? (
           <div className="grid grid-cols-1 gap-4">
             {dataEntries

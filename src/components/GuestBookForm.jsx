@@ -1,10 +1,6 @@
 import { useAccount } from "wagmi";
 
-const GuestBookForm = ({
-  handleSubmit,
-  handleNewEntryChange,
-  newEntry,
-}) => {
+const GuestBookForm = ({ handleSubmit, handleNewEntryChange, newEntry }) => {
   const { isConnected } = useAccount();
 
   return (
@@ -27,7 +23,7 @@ const GuestBookForm = ({
         </div>
         <div className="flex justify-end">
           <input
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             type="submit"
             disabled={!isConnected}
             value="Add Entry"
