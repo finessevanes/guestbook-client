@@ -84,7 +84,7 @@ function App() {
           </div>
         )}
         <div className="max-h-screen overflow-y-auto">
-          {Boolean(dataEntries.length) ? (
+          {Boolean(dataEntries?.length) ? (
             <div className="grid grid-cols-1 gap-4">
               {dataEntries
                 .map((entry, index) => <Entry key={index} entry={entry} />)
