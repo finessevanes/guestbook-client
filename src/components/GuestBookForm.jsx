@@ -21,7 +21,16 @@ const GuestBookForm = ({ handleSubmit, handleNewEntryChange, newEntry }) => {
             onChange={handleNewEntryChange}
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          <a href="https://goerlifaucet.com/" target="_blank">
+            <input
+              className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              type="button"
+              disabled={!isConnected}
+              value="Get Test Funds"
+            />
+          </a>
+
           <input
             className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             type="submit"
