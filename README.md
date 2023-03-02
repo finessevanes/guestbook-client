@@ -35,4 +35,4 @@ This should launch the app in your default browser at `http://127.0.0.1:5173/`. 
 
 ## Usage
 
-Once the app is running, connect to your wallet using the "Connect" button. You can then enter a new entry in the guestbook form and click "Add Entry" to submit it. You will be asked to confirm this transaction on your wallet. Once approved, your entry will be added to the blockchain and displayed on the screen.
+Once the app is running, connect to your wallet using the "Connect" button. You can then enter a new entry in the guestbook form and click "Add Entry" to submit it. You will be asked to confirm this transaction on your wallet. Once approved, your entry will be added to the blockchain and displayed.
