@@ -1,5 +1,5 @@
-import { configureChains, createClient, WagmiConfig, useAccount } from "wagmi";
-import { goerli, localhost } from "wagmi/chains";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { goerli, localhost, sepolia } from "wagmi/chains";
 import {
   EthereumClient,
   modalConnectors,
@@ -12,7 +12,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-const chains = [goerli, localhost];
+const chains = [goerli, sepolia, localhost];
 const projectId = import.meta.env.VITE_PROJECT_ID;
 const { provider } = configureChains(chains, [
   walletConnectProvider({ projectId }),
@@ -23,11 +23,12 @@ const wagmiClient = createClient({
   connectors: modalConnectors({
     projectId,
     version: "1",
-    appName: "web3Modal",
+    appName: "ETH Denver",
     chains,
   }),
   provider,
 });
+
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

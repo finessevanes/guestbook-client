@@ -15,7 +15,7 @@ function App() {
   const [newEntry, setNewEntry] = useState("");
   const [txnHash, setTxnHash] = useState("");
   const abi = guestBook.abi;
-  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
+  const goerliContractAddress = import.meta.env.VITE_GOERLI_CONTRACT_ADDRESS;
 
   setTheme({
     themeMode: "light",
@@ -24,14 +24,14 @@ function App() {
   });
 
   const { data: dataEntries } = useContractRead({
-    address: contractAddress,
+    address: goerliContractAddress,
     abi,
     functionName: "getEntries",
     watch: true,
   });
 
   const { config } = usePrepareContractWrite({
-    address: contractAddress,
+    address: goerliContractAddress,
     abi,
     functionName: "addEntry",
     args: [newEntry],
@@ -83,17 +83,15 @@ function App() {
             </div>
           </div>
         )}
-        <div className="max-h-screen overflow-y-auto">
-          {Boolean(dataEntries?.length) ? (
-            <div className="grid grid-cols-1 gap-4">
-              {dataEntries
-                .map((entry, index) => <Entry key={index} entry={entry} />)
-                .reverse()}
-            </div>
-          ) : (
-            <h1>No results</h1>
-          )}
-        </div>
+        {Boolean(dataEntries?.length) ? (
+          <div className="grid grid-cols-1 gap-4">
+            {dataEntries
+              .map((entry, index) => <Entry key={index} entry={entry} />)
+              .reverse()}
+          </div>
+        ) : (
+          <h1>No results</h1>
+        )}
       </div>
     </div>
   );
