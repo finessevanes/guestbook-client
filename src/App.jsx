@@ -1,47 +1,29 @@
 import { useEffect, useState } from "react";
-import { Web3Button, useWeb3ModalTheme } from "@web3modal/react";
-import {
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
+// import @web3modal/react and wagmi
 import GuestBookForm from "./components/GuestBookForm";
 import Entry from "./components/Entry";
 import guestBook from "./abis/guestBook.json";
 
 function App() {
-  const { setTheme } = useWeb3ModalTheme();
   const [newEntry, setNewEntry] = useState("");
   const [txnHash, setTxnHash] = useState("");
   const abi = guestBook.abi;
   const goerliContractAddress = import.meta.env.VITE_GOERLI_CONTRACT_ADDRESS;
+  let isLoading;
+  let dataEntries;
 
-  setTheme({
-    themeMode: "light",
-    themeColor: "blackWhite",
-    themeBackground: "gradient",
-  });
+  // set theme
 
-  const { data: dataEntries } = useContractRead({
-    address: goerliContractAddress,
-    abi,
-    functionName: "getEntries",
-    watch: true,
-  });
+  // useContractRead to read data from the contract
 
-  const { config } = usePrepareContractWrite({
-    address: goerliContractAddress,
-    abi,
-    functionName: "addEntry",
-    args: [newEntry],
-  });
+  // useContractWrite to write data to the contract
 
-  const { data: writeGuestBookData, write } = useContractWrite(config);
+  // usePrepareContractWrite to prepare the write
 
-  const { isLoading } = useWaitForTransaction({
-    hash: writeGuestBookData?.hash,
-  });
+  // useContractCall to call the contract
+
+
+  // useWaitForTransaction to wait for the transaction to be minded and get the transaction hash
 
   const handleNewEntryChange = (event) => {
     setNewEntry(event.target.value);
@@ -49,20 +31,15 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    write?.();
+    // write?.();
     setNewEntry("");
   };
 
-  useEffect(() => {
-    if (writeGuestBookData?.hash !== undefined) {
-      setTxnHash(writeGuestBookData.hash);
-    }
-  }, [writeGuestBookData]);
+  // set txnHash when writeGuestBookData is updated (useEffect)
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-lg m-2">
-        <Web3Button label="Connect" icon="hide" className="web3modal" />
         <GuestBookForm
           handleSubmit={handleSubmit}
           handleNewEntryChange={handleNewEntryChange}

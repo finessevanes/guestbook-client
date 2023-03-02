@@ -1,7 +1,8 @@
-import { useAccount } from "wagmi";
+// import useAccount from wagmi
 
 const GuestBookForm = ({ handleSubmit, handleNewEntryChange, newEntry }) => {
-  const { isConnected } = useAccount();
+  // useAccount to get the account
+  let isConnected;
 
   return (
     <div className="bg-white shadow-md rounded px-8 py-6 mb-8 mt-2">
