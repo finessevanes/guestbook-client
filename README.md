@@ -8,7 +8,7 @@ This is a simple guestbook app built with Vite that allows users to add new entr
 2. Install the project dependencies
 
 ```
-yarn add
+yarn
 ```
 
 3. Create a new file called `.env` in the project directory to store your WalletConnect project ID:
@@ -21,6 +21,7 @@ touch .env
 
 ```
 VITE_PROJECT_ID=XXXXXX
+VITE_GOERLI_CONTRACT_ADDRESS=0xCC64aE81777169420be5e8c73f209F0733F3ac00
 ```
 
 - Replace XXXXXX with your own project ID obtained from https://cloud.walletconnect.com.
