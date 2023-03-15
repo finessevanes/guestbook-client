@@ -30,6 +30,8 @@ function App() {
     watch: true,
   });
 
+  console.log("dataEntries", dataEntries);
+
   const { config } = usePrepareContractWrite({
     address: goerliContractAddress,
     abi,
